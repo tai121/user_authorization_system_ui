@@ -1,0 +1,124 @@
+<button cButton color="success" shape="rounded-pill" (click)="toggleCreate()">New role</button>
+<table cTable>
+    <thead>
+    <tr>
+      <th scope="col">Order</th>
+      <th scope="col">Name</th>
+      <th scope="col">Description</th>
+      <th scope="col">PermissionInterger</th>
+      <th scope="col">Action</th>
+    </tr>
+    </thead>
+    <tbody *ngFor="let role of list_role_data;let i = index">
+    <tr cTableColor="{{colors[i%8]}}">
+      <th scope="row">{{i+1}}</th>
+      <td>{{role.name}}</td>
+      <td>{{role.description}}</td>
+      <td>{{role.permissionInterger}}</td>
+      <td>
+        <button cButton color="warning" shape="rounded-pill" (click)="toggleUpdate(role._id)">Update</button>
+        <button cButton color="danger" shape="rounded-pill" (click)="toggleDelete(role._id)">Delete</button>
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+  
+  <c-modal  [visible]="updateVisible" (visibleChange)="handleUpdateChange($event)">
+    <c-modal-header>
+      <h5 cModalTitle>Update</h5>
+      <button (click)="toggleUpdate()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+      <label cLabel >Role name</label>
+      <input cFormControl placeholder="Role name" [(ngModel)]="roleInfo.role.name" [ngModelOptions]="{standalone: true}"/>
+      <label cLabel >Description</label>
+      <input cFormControl placeholder="Description" [(ngModel)]="roleInfo.role.description" [ngModelOptions]="{standalone: true}"/>
+      <label cLabel >Permission Interger</label>
+      <input cFormControl placeholder="Permission Interger" [(ngModel)]="roleInfo.role.permissionInterger" [ngModelOptions]="{standalone: true}"/>
+      <hr/>
+      <label cLabel >Permission</label>
+      <c-container>
+        <c-row xxl="auto" >
+          <ng-container *ngFor="let permission of list_permission_data">
+            <c-col >
+              <c-form-check>
+                <input cFormCheckInput id="checkOne" type="checkbox" [(ngModel)]="permission.isActive" [ngModelOptions]="{standalone: true}" (change)="onChangePermission()"
+                />
+                <label cFormCheckLabel >{{permission.name}}</label>
+              </c-form-check>
+            </c-col>
+          </ng-container>
+         
+        </c-row>
+      </c-container>
+      <hr/>
+    <label cLabel >User</label> 
+    <c-container>
+      <c-row [xxl]="3">
+        <ng-container *ngFor="let user of list_user_data">
+          <c-col >
+            <div>&bull; {{user.userName}}</div> 
+        </c-col>
+        </ng-container>
+      </c-row> 
+    </c-container>  
+    </c-modal-body>
+    <c-modal-footer>
+      <button shape="rounded-pill" (click)="toggleUpdate()" cButton color="secondary">
+        Close
+      </button>
+      <button shape="rounded-pill" cButton color="primary" (click)="updateRole()">Save changes</button>
+    </c-modal-footer>
+  </c-modal>
+  
+  
+  <c-modal  [visible]="createVisible" (visibleChange)="handleCreateChange($event)">
+    <c-modal-header>
+      <h5 cModalTitle>Modal title</h5>
+      <button (click)="toggleCreate()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <input cFormControl placeholder="Role name" [(ngModel)]="roleInfo.role.name" [ngModelOptions]="{standalone: true}"/>
+        <label cLabel >Description</label>
+        <input cFormControl placeholder="Description" [(ngModel)]="roleInfo.role.description" [ngModelOptions]="{standalone: true}"/>
+        <label cLabel >Permission Interger</label>
+        <input cFormControl placeholder="Permission Interger" [(ngModel)]="roleInfo.role.permissionInterger" [ngModelOptions]="{standalone: true}"/>
+        <label cLabel >Permission</label>
+      <c-container>
+        <c-row xxl="auto" >
+          <ng-container *ngFor="let permission of list_permission_data">
+            <c-col >
+              <c-form-check>
+                <input cFormCheckInput id="checkOne" type="checkbox" [(ngModel)]="permission.isActive" [ngModelOptions]="{standalone: true}" (change)="onChangePermission()"
+                />
+                <label cFormCheckLabel >{{permission.name}}</label>
+              </c-form-check>
+            </c-col>
+          </ng-container>
+         
+        </c-row>
+      </c-container>
+    </c-modal-body>
+    <c-modal-footer>
+      <button (click)="toggleCreate()" cButton color="secondary">
+        Close
+      </button>
+      <button cButton color="primary" (click)="createRole()">Create</button>
+    </c-modal-footer>
+  </c-modal>
+  
+  
+  <c-modal [visible]="deleteVisible" (visibleChange)="handleDeleteChange($event)">
+    <c-modal-header>
+      <h5 cModalTitle>Delete</h5>
+      <button (click)="toggleDelete()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>Are you sure you want to delete it?</c-modal-body>
+    <c-modal-footer>
+      <button (click)="toggleDelete()" cButton color="secondary">
+        Close
+      </button>
+      <button cButton color="danger" (click)="deleteRole()">Delete</button>
+    </c-modal-footer>
+  </c-modal>

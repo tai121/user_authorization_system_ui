@@ -1,0 +1,99 @@
+<button cButton color="success" shape="rounded-pill" (click)="toggleCreate()">New permission</button>
+<table cTable>
+    <thead>
+    <tr>
+      <th scope="col">Order</th>
+      <th scope="col">Name</th>
+      <th scope="col">Code</th>
+      <th scope="col">Action</th>
+    </tr>
+    </thead>
+    <tbody *ngFor="let permission of list_permission_data;let i = index">
+    <tr cTableColor="{{colors[i%colors.length]}}">
+      <th scope="row">{{i+1}}</th>
+      <td>{{permission.name}}</td>
+      <td>{{permission.code}}</td>
+      <td>
+        <button cButton color="warning" shape="rounded-pill" (click)="toggleUpdate(permission._id)">Update</button>
+        <button cButton color="danger" shape="rounded-pill" (click)="toggleDelete(permission._id)">Delete</button>
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+  
+  <c-modal  [visible]="updateVisible" (visibleChange)="handleUpdateChange($event)">
+    <c-modal-header>
+      <h5 cModalTitle>Update</h5>
+      <button (click)="toggleUpdate()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+      <label cLabel >Permission name</label>
+      <input cFormControl placeholder="Permission name" [(ngModel)]="permissionInfo.permission.name" [ngModelOptions]="{standalone: true}"/>
+      <label cLabel >Code</label>
+      <input cFormControl placeholder="Code" [(ngModel)]="permissionInfo.permission.code" [ngModelOptions]="{standalone: true}"/>
+      <hr/>
+      <label cLabel >Role</label>
+      <c-container>
+        <c-row [xxl]="3">
+          <ng-container *ngFor="let role of list_role_data">
+            <c-col >
+              <div>&bull; {{role.name}}</div> 
+          </c-col>
+          </ng-container>
+        </c-row> 
+      </c-container>
+         
+        
+      <hr/>
+    <label cLabel >User</label> 
+    <c-container>
+      <c-row [xxl]="3">
+        <ng-container *ngFor="let user of list_user_data">
+          <c-col >
+            <div>&bull; {{user.userName}}</div> 
+        </c-col>
+        </ng-container>
+      </c-row> 
+    </c-container>  
+    </c-modal-body>
+    <c-modal-footer>
+      <button shape="rounded-pill" (click)="toggleUpdate()" cButton color="secondary">
+        Close
+      </button>
+      <button shape="rounded-pill" cButton color="primary" (click)="updatePermission()">Save changes</button>
+    </c-modal-footer>
+  </c-modal>
+  
+  
+  <c-modal  [visible]="createVisible" (visibleChange)="handleCreateChange($event)">
+    <c-modal-header>
+      <h5 cModalTitle>Modal title</h5>
+      <button (click)="toggleCreate()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <label cLabel >Permission name</label>
+        <input cFormControl placeholder="Permission name" [(ngModel)]="permissionInfo.permission.name" [ngModelOptions]="{standalone: true}"/>
+    </c-modal-body>
+    <c-modal-footer>
+      <button (click)="toggleCreate()" cButton color="secondary">
+        Close
+      </button>
+      <button cButton color="primary" (click)="createPermission()">Create</button>
+    </c-modal-footer>
+  </c-modal>
+  
+  
+  <c-modal [visible]="deleteVisible" (visibleChange)="handleDeleteChange($event)">
+    <c-modal-header>
+      <h5 cModalTitle>Delete</h5>
+      <button (click)="toggleDelete()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>Are you sure you want to delete it?</c-modal-body>
+    <c-modal-footer>
+      <button (click)="toggleDelete()" cButton color="secondary">
+        Close
+      </button>
+      <button cButton color="danger" (click)="deletePermission()">Delete</button>
+    </c-modal-footer>
+  </c-modal>
